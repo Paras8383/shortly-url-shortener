@@ -1,15 +1,16 @@
-# [Project name]
+# Shortly
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+Shortly turns long URLs into clean, shareable links through a responsive React frontend with an AWS-ready API boundary and local mock fallback.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
+- `pnpm --filter @workspace/shortly run dev` — run the Shortly frontend
+- `pnpm --filter @workspace/api-server run dev` — run the shared API server (port 5000)
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- Frontend env: `VITE_API_URL` — optional AWS API Gateway base URL. When omitted, Shortly uses its local mock shortener.
 
 ## Stack
 
@@ -22,23 +23,29 @@ _Replace the heading above with the project's name, and this line with one sente
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/shortly/src/pages/home.tsx` — landing page and URL shortening flow
+- `artifacts/shortly/src/lib/shorten-url.ts` — AWS-ready API utility and mock fallback
+- `artifacts/shortly/src/index.css` — visual system and responsive styles
+- `artifacts/shortly/README.md` — local setup and API contract notes
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Keep the first release frontend-only; no authentication, database, or backend service is required for the user flow.
+- Isolate the network boundary in `shorten-url.ts` so AWS API Gateway can be added without changing the UI.
+- Use a deterministic mock response when `VITE_API_URL` is absent so validation, loading, success, and copy states remain demonstrable locally.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+Users can paste a long HTTP(S) URL, receive a generated short URL, copy it to their clipboard, and start another shortening flow. The page also explains the three-step process and includes a minimal AWS placeholder footer.
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+- Keep the project beginner-friendly and avoid adding authentication, a database, or a backend service unless explicitly requested.
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- The artifact workflow supplies `PORT` and `BASE_PATH`; use the managed Shortly workflow rather than starting Vite from the workspace root.
+- After changing the API contract or utility, keep the expected request at `POST ${VITE_API_URL}/shorten` with `{ url }` and the response field as `shortUrl`.
 
 ## Pointers
 

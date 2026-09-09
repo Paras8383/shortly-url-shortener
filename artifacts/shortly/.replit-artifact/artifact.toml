@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Shortly"
+description = "A polished URL shortener landing page with a mock-ready API integration that can connect to AWS API Gateway later."
+version = "1.0.0"
+id = "artifacts/shortly"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 25277
+
+[services.development]
+run = "pnpm --filter @workspace/shortly run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/shortly", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/shortly/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "25277"
+BASE_PATH = "/"
