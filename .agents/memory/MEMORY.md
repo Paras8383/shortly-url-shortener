@@ -1,0 +1,1 @@
+- [Scaffold duplication failures](artifact-scaffold-duplication.md) — when pnpm reports JSON parse errors after scaffolding, inspect manifests and generated source for concatenated duplicate copies.
