@@ -1,1 +1,2 @@
 - [Scaffold duplication failures](artifact-scaffold-duplication.md) — when pnpm reports JSON parse errors after scaffolding, inspect manifests and generated source for concatenated duplicate copies.
+- [Static build environment](artifact-static-build-env.md) — static Vite builds must not require workflow-only PORT or BASE_PATH variables.
